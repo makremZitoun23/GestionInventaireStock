@@ -22,14 +22,14 @@ jobs:
     
      - name: build App
        run: mvn clean install
-       
+
      - run: ls -l ${{ github.workspace }}/target/
 
      - name: Upload artifact for deployment job
        uses: actions/upload-artifact@v3
        with:
           name: inventory-app
-          path: '${{ github.workspace }}/target/Gestion-inventaire.jar'
+          path: '${{ github.workspace }}/target/Gestion-inventaire-1.0.jar'
           
 #   Build-DockerFile-Push-Image-To-DockerHub:
 #     runs-on: ubuntu-latest
