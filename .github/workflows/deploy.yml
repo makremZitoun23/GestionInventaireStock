@@ -22,7 +22,9 @@ jobs:
     
      - name: build App
        run: mvn clean install
-     
+       
+     - run: ls -l ${{ github.workspace }}/target/
+
      - name: Upload artifact for deployment job
        uses: actions/upload-artifact@v3
        with:
