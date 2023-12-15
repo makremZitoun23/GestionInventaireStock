@@ -17,7 +17,7 @@ services:
         depends_on:
             - mysqlcn
        # build: . 
-        image: makremzitoun/inventory-app:11
+        image: makremzitoun/inventory-app
         restart: on-failure
         env_file: ./.env
         ports:
