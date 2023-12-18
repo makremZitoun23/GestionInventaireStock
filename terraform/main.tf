@@ -5,6 +5,14 @@ terraform {
       version = "3.84.0"
     }
   }
+
+  backend "azurerm" {
+    resource_group_name  = "tf-data"
+    storage_account_name = "tfstatedata2023"
+    container_name       = "state-container"
+    key                  = "terraform.tfstate"
+    use_oidc             = true
+  }
 }
 
 provider "azurerm" {
