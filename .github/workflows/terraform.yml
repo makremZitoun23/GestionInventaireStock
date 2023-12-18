@@ -37,7 +37,7 @@ jobs:
         id: destroy
         run: terraform destroy -auto-approve
 
-      - name: Terraform Plan
+      - name: Terraform Apply
         #id: plan
-        run: ls -l . && terraform apply -auto-approve
+        run: terraform apply -auto-approve
         continue-on-error: true
