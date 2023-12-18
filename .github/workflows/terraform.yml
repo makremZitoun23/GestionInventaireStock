@@ -1,47 +1,43 @@
 name: BuildJavaApp-PushImageToHub-RunImageOnAzVM
 on:
-
- pull_request:
+  pull_request:
     branches: ['master']
- workflow_dispatch:
+  workflow_dispatch:
 defaults:
-    run:
-     working-directory: ./terraform
+  run:
+    working-directory: ./terraform
 env:
-    IMAGE_NAME: makremzitoun/inventory-app
-    ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-    ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-    ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
-    ARM_CLIENT_SECRET: "${{ secrets.ARM_CLIENT_SECRET }}"  
-        
+  IMAGE_NAME: makremzitoun/inventory-app
+  ARM_CLIENT_ID: '${{ secrets.AZURE_CLIENT_ID }}'
+  ARM_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+  ARM_TENANT_ID: '${{ secrets.AZURE_TENANT_ID }}'
+  ARM_CLIENT_SECRET: '${{ secrets.ARM_CLIENT_SECRET }}'
+
 jobs:
   Build-Java-App-With-Gradle:
     runs-on: ubuntu-latest
     steps:
-     
-     - uses: actions/checkout@v3
-     - uses: hashicorp/setup-terraform@v3
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v3
 
-     - name: Terraform fmt
-       id: fmt
-       run: terraform fmt -check
-       continue-on-error: true
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
 
-     - name: Terraform Init
-       id: init
-       run: terraform init
+      - name: Terraform Init
+        id: init
+        run: terraform init
 
-     - name: Terraform Validate
-       id: validate
-       run: terraform validate -no-color
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
 
-     - name: Terrform Destroy
-       id: destroy
-       run: terraform destroy
+      - name: Terrform Destroy
+        id: destroy
+        run: terraform destroy -auto-approve
 
-     - name: Terraform Plan
-       #id: plan
-       run: ls -l . && terraform apply -auto-approve
-       continue-on-error: true
-     
-          
+      - name: Terraform Plan
+        #id: plan
+        run: ls -l . && terraform apply -auto-approve
+        continue-on-error: true
