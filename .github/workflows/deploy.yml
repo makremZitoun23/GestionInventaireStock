@@ -27,7 +27,7 @@ jobs:
      - name: Upload artifact for deployment job
        uses: actions/upload-artifact@v3
        with:
-          name: inventory-app
+          name: inventory-app 
           path: '${{ github.workspace }}/target/Gestion-inventaire-1.0.jar'
           
   Build-DockerFile-Push-Image-To-DockerHub:
