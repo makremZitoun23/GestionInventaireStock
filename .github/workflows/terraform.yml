@@ -31,6 +31,10 @@ jobs:
        id: validate
        run: terraform validate -no-color
 
+     - name: Terrform Destroy
+       id: destroy
+       run: terraform destroy
+
      - name: Terraform Plan
        #id: plan
        run: ls -l . && terraform apply -auto-approve
