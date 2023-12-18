@@ -63,18 +63,18 @@ resource "azurerm_network_interface" "main" {
 }
 
 resource "time_sleep" "await_nic" {
-  depends_on = [ azurerm_network_interface.main ]
-    destroy_duration = "10s"
+  depends_on       = [azurerm_network_interface.main]
+  destroy_duration = "10s"
 }
 resource "azurerm_virtual_machine" "vms_deployment" {
-  name                  = var.vms
-  location              = var.region
-  resource_group_name   = azurerm_resource_group.rg_depl.name
-  vm_size               = var.vm_size
-  network_interface_ids = [azurerm_network_interface.main.id]
-  delete_os_disk_on_termination = true
+  name                             = var.vms
+  location                         = var.region
+  resource_group_name              = azurerm_resource_group.rg_depl.name
+  vm_size                          = var.vm_size
+  network_interface_ids            = [azurerm_network_interface.main.id]
+  delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
-  depends_on = [ azurerm_network_interface_security_group_association.link-sg ]
+  depends_on                       = [azurerm_network_interface_security_group_association.link-sg]
   storage_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
@@ -105,6 +105,6 @@ output "password" {
 }
 
 output "publicIP" {
-  depends_on = [ azurerm_public_ip.pubsIps ]
-  value = azurerm_public_ip.pubsIps.ip_address
+  depends_on = [azurerm_public_ip.pubsIps]
+  value      = azurerm_public_ip.pubsIps.ip_address
 }
