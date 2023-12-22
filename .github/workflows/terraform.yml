@@ -29,6 +29,9 @@ jobs:
         id: init
         run: terraform init
 
+      - name: Write SSH Key
+        run: echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRq/tgv1yLFrIocxRs3ORrhKVNJmCCh7eFFA7vDN7QEaduKR+Nw20Bjk4NAdvm+YaOFusN4bYxe+zMFGNLpcQ8+NSBbDmH9OMU91+HyvKXFUs4GfaN1Y4nabgiy3LZk8HgHRdFWJNjqgOVkbnphCOF0jYW8wCmDr/JSo8CPjAiJwcIaGWBquwGSV3CKyf2xJgYO6c/F/8FgLRmI9uEQ4Q5IeMFvrdb9ucB7nwyMdX8aPppIlDrTKZ7hiyEE6G0FLV0ShPPaYcsA7+RIS+UgJ0ECnzscu4oMNjSKgjXdoFdDEXidiLMYZXA8g+WMV7unzhdl2zgSFhHxRVIespUWqCr/8T3kFUhZ2C9ObFXDLZcB55SiWS1LbvODqgHqzzlOSXSCmOA5fdSozVn1QVkRYZHg42VWBRvEkhZ2/IL/UkZhhX8utF9GJXcdkzMPjjgCzF85bwRcw3/RHaFVzIwTvU7QtZpatS2szPaEtOV7PYfTC4F5ZDQNfxypdDxfFiAoMvZK9esyQU29PDFdIb6bRKEyaB+OekgFSFe4y5C2pq0+kPN325yDZsGturUcAwy3Ds8We2jVEm/UnO7AnbEekO4oNHS1LrREOSM/3T+gaWuD7ty6iFuLA+EKqqVOpqe4+2Eor4YgIi3R7by4416/K0RmvCr6yCbyqxYeVjjQdBqpw== bridge@targus" > ./azure_key
+
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
