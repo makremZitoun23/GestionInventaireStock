@@ -95,9 +95,15 @@ resource "null_resource" "remote_provionner" {
       agent = false
   }
 provisioner "remote-exec" {
-  inline = [ "docker compose up -d" ]
+  inline = [ "sleep 10 && docker compose up -d" ]
+ 
+}
+ depends_on = [ time_sleep.await-docker ]
 }
 
+resource "time_sleep" "await-docker" {
+  create_duration = "10s"
+  depends_on = [ azurerm_virtual_machine.vms_deployment ]
 }
 
 output "password" {
