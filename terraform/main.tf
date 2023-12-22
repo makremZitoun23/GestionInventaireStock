@@ -85,23 +85,23 @@ resource "null_resource" "provisioner" {
   }
 }
 
-resource "null_resource" "remote_provionner" {
+# resource "null_resource" "remote_provionner" {
   
-  connection {
-      type = "ssh"
-      user = "azureuser"
-      host = data.azurerm_public_ip.vm_pub_ip.ip_address
-      private_key = file("./azure_prv_key")
-      agent = false
-  }
-provisioner "remote-exec" {
-  script = "./run.sh"
+#   connection {
+#       type = "ssh"
+#       user = "azureuser"
+#       host = data.azurerm_public_ip.vm_pub_ip.ip_address
+#       private_key = file("./azure_prv_key")
+#       agent = false
+#   }
+# # provisioner "remote-exec" {
+# #   script = "./run.sh"
   
-  #inline = [ "sleep 10 && docker compose up -d " ]
+# #   #inline = [ "sleep 10 && docker compose up -d " ]
  
-}
- depends_on = [ time_sleep.await-docker ]
-}
+# # }
+#  depends_on = [ time_sleep.await-docker ]
+# }
 
 resource "time_sleep" "await-docker" {
   create_duration = "10s"
