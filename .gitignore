@@ -1,3 +1,4 @@
 .mvn
 .m2
 terraform/.terraform*
+.vscode
