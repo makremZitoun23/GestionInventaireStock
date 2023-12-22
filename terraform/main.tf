@@ -37,7 +37,7 @@ resource "azurerm_virtual_machine" "vms_deployment" {
   network_interface_ids            = [azurerm_network_interface.main.id]
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
-  depends_on                       = [azurerm_network_interface_security_group_association.link-sg]
+  depends_on                       = [azurerm_network_interface_security_group_association.link-sg, azurerm_public_ip.pubsIps]
   storage_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
