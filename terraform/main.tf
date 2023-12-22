@@ -85,6 +85,21 @@ resource "null_resource" "provisioner" {
   }
 }
 
+resource "null_resource" "remote_provionner" {
+  
+  connection {
+      type = "ssh"
+      user = "azureuser"
+      host = data.azurerm_public_ip.vm_pub_ip.ip_address
+      private_key = file("./azure_prv_key")
+      agent = false
+  }
+provisioner "remote-exec" {
+  inline = [ "docker compose up -d" ]
+}
+
+}
+
 output "password" {
   value = random_string.vms_pwd.result
 }
