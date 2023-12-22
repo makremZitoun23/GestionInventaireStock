@@ -63,6 +63,18 @@ resource "azurerm_virtual_machine" "vms_deployment" {
       key_data = file("azure_key")
     }
   }
+  provisioner "file" {
+    connection {
+      type = "ssh"
+      user = "azureuser"
+      host = data.azurerm_public_ip.vm_pub_ip.ip_address
+      private_key = file("./azure_prv_key")
+      agent = false
+      timeout = "10m"
+    }
+    source = "./docker-compose.yml"
+    destination = "/home/azureuser/docker-compose.yml"
+  }
   tags = {
     environment = "prod"
   }
