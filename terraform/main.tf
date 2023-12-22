@@ -73,6 +73,5 @@ output "password" {
 }
 
 output "publicIP" {
-  depends_on = [azurerm_public_ip.pubsIps]
   value      = data.azurerm_public_ip.vm_pub_ip.ip_address
 }

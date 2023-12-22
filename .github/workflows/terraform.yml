@@ -1,7 +1,5 @@
 name: BuildJavaApp-PushImageToHub-RunImageOnAzVM
 on:
-  push:
-    branches: ['master']
   pull_request:
     branches: ['master']
   workflow_dispatch:
