@@ -95,7 +95,9 @@ resource "null_resource" "remote_provionner" {
       agent = false
   }
 provisioner "remote-exec" {
-  inline = [ "sleep 10 && docker compose up -d" ]
+  script = "./run.sh"
+  
+  #inline = [ "sleep 10 && docker compose up -d " ]
  
 }
  depends_on = [ time_sleep.await-docker ]
