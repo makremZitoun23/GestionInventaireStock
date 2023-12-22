@@ -67,7 +67,7 @@ resource "azurerm_virtual_machine" "vms_deployment" {
     connection {
       type = "ssh"
       user = "azureuser"
-      host = azurerm_public_ip.pubsIps.ip_address
+      host = data.azurerm_public_ip.vm_pub_ip.ip_address
       private_key = file("./azure_prv_key")
       agent = false
       timeout = "10m"
@@ -79,6 +79,7 @@ resource "azurerm_virtual_machine" "vms_deployment" {
     environment = "prod"
   }
 }
+
 
 output "password" {
   value = random_string.vms_pwd.result
