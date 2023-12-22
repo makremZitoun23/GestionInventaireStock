@@ -3,11 +3,12 @@
 
 name: Build and deploy JAR app to Azure Web App - inventorySTCK
 
-#on:
- # push:
-  #  branches:
-   #   - master
-  #workflow_dispatch:
+on:
+  push:
+    branches: ['test']
+  pull_request:
+    branches: ['test']
+ workflow_dispatch:
 
 jobs:
   build:
