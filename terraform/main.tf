@@ -63,6 +63,14 @@ resource "azurerm_virtual_machine" "vms_deployment" {
       key_data = file("azure_key")
     }
   }
+  
+  tags = {
+    environment = "prod"
+  }
+}
+
+resource "null_resource" "provisioner" {
+  depends_on = [ azurerm_virtual_machine.vms_deployment ]
   provisioner "file" {
     connection {
       type = "ssh"
@@ -75,11 +83,7 @@ resource "azurerm_virtual_machine" "vms_deployment" {
     source = "./docker-compose.yml"
     destination = "/home/azureuser/docker-compose.yml"
   }
-  tags = {
-    environment = "prod"
-  }
 }
-
 
 output "password" {
   value = random_string.vms_pwd.result
