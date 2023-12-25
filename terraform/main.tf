@@ -54,64 +54,69 @@ resource "azurerm_virtual_machine" "vms_deployment" {
     computer_name  = "stock-prod"
     admin_username = "azureuser"
     admin_password = random_string.vms_pwd.result
-    custom_data = data.template_file.cloud-init.rendered
+    custom_data    = data.template_file.cloud-init.rendered
   }
   os_profile_linux_config {
     disable_password_authentication = true
     ssh_keys {
-      path = "/home/azureuser/.ssh/authorized_keys"
+      path     = "/home/azureuser/.ssh/authorized_keys"
       key_data = file("azure_key")
     }
   }
-  
+
   tags = {
     environment = "prod"
   }
 }
 
 resource "null_resource" "provisioner" {
-  depends_on = [ azurerm_virtual_machine.vms_deployment ]
+  depends_on = [azurerm_virtual_machine.vms_deployment]
+  connection {
+    type        = "ssh"
+    user        = "azureuser"
+    host        = data.azurerm_public_ip.vm_pub_ip.ip_address
+    private_key = file("./azure_prv_key")
+    agent       = false
+    timeout     = "10m"
+  }
   provisioner "file" {
-    connection {
-      type = "ssh"
-      user = "azureuser"
-      host = data.azurerm_public_ip.vm_pub_ip.ip_address
-      private_key = file("./azure_prv_key")
-      agent = false
-      timeout = "10m"
-    }
-    source = "./docker-compose.yml"
+    source      = "./docker-compose.yml"
     destination = "/home/azureuser/docker-compose.yml"
+  }
+  provisioner "file" {
+    source      = "./.env"
+    destination = "/home/azureuser/.env"
   }
 }
 
-# resource "null_resource" "remote_provionner" {
-  
-#   connection {
-#       type = "ssh"
-#       user = "azureuser"
-#       host = data.azurerm_public_ip.vm_pub_ip.ip_address
-#       private_key = file("./azure_prv_key")
-#       agent = false
-#   }
-# # provisioner "remote-exec" {
-# #   script = "./run.sh"
-  
-# #   #inline = [ "sleep 10 && docker compose up -d " ]
- 
-# # }
-#  depends_on = [ time_sleep.await-docker ]
-# }
+resource "null_resource" "remote_provionner" {
 
-resource "time_sleep" "await-docker" {
-  create_duration = "10s"
-  depends_on = [ azurerm_virtual_machine.vms_deployment ]
+  connection {
+    type        = "ssh"
+    user        = "azureuser"
+    host        = data.azurerm_public_ip.vm_pub_ip.ip_address
+    private_key = file("./azure_prv_key")
+    agent       = false
+  }
+  provisioner "remote-exec" {
+    #script = "./run.sh"
+    inline = [" until docker --version; do echo 'Waiting for docker to install' && sleep 30; done",
+      "sleep 30",
+    "sudo docker compose up -d"]
+
+  }
+  #  depends_on = [ time_sleep.await-docker ]
 }
+
+# resource "time_sleep" "await-docker" {
+#   create_duration = "10s"
+#   depends_on = [ azurerm_virtual_machine.vms_deployment ]
+# }
 
 output "password" {
   value = random_string.vms_pwd.result
 }
 
 output "publicIP" {
-  value      = data.azurerm_public_ip.vm_pub_ip.ip_address
+  value = data.azurerm_public_ip.vm_pub_ip.ip_address
 }
